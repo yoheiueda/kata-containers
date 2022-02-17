@@ -1692,17 +1692,16 @@ fn setup_bundle(cid: &str, spec: &mut Spec) -> Result<PathBuf> {
         "The rootfs_path is {:?} and exists: {}", rootfs_path, rootfs_exists
     );
 
+    let mut src_path: &str = &spec_root.path;
+    let dst_path = rootfs_path.to_str().unwrap();
+
     if !rootfs_exists {
         fs::create_dir_all(&rootfs_path)?;
-        baremount(
-            &spec_root.path,
-            rootfs_path.to_str().unwrap(),
-            "bind",
-            MsFlags::MS_BIND,
-            "",
-            &sl!(),
-        )?;
+    } else {
+        src_path = dst_path;
     }
+    baremount(src_path, dst_path, "bind", MsFlags::MS_BIND, "", &sl!())?;
+
     spec.root = Some(Root {
         path: rootfs_path.to_str().unwrap().to_owned(),
         readonly: spec_root.readonly,
