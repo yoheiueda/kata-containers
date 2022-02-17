@@ -420,6 +420,52 @@ func (c *Container) setContainerState(state types.StateString) error {
 	return nil
 }
 
+func readDir(path string) ([]string, error) {
+
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	return file.Readdirnames(0)
+}
+
+func (c *Container) recursiveCopy(ctx context.Context, src, dst string) (bool, error) {
+
+	fileInfo, err := os.Lstat(src)
+	if err != nil {
+		return false, err
+	}
+
+	if !(fileInfo.Mode().IsRegular() || fileInfo.Mode().IsDir() || (fileInfo.Mode()&os.ModeSymlink) == os.ModeSymlink) {
+		// Ignore the mount if this is not a regular file (excludes socket, device, ...) as it cannot be handled by
+		// a simple copy. But this should not be treated as an error, only as a limitation.
+		c.Logger().WithField("ignored-file", src).Debug("Ignoring non-regular file as FS sharing not supported")
+		return true, nil
+	}
+
+	if err := c.sandbox.agent.copyFile(ctx, src, dst); err != nil {
+		return false, err
+	}
+
+	if !fileInfo.Mode().IsDir() {
+		return false, nil
+	}
+
+	names, err := readDir(src)
+	if err != nil {
+		return false, err
+	}
+
+	for _, name := range names {
+		if _, err := c.recursiveCopy(ctx, filepath.Join(src, name), filepath.Join(dst, name)); err != nil {
+			return false, err
+		}
+	}
+	return false, nil
+}
+
 func (c *Container) shareFiles(ctx context.Context, m Mount, idx int) (string, bool, error) {
 	randBytes, err := utils.GenerateRandomBytes(8)
 	if err != nil {
@@ -435,23 +481,15 @@ func (c *Container) shareFiles(ctx context.Context, m Mount, idx int) (string, b
 	if !caps.IsFsSharingSupported() {
 		c.Logger().Debug("filesystem sharing is not supported, files will be copied")
 
-		fileInfo, err := os.Stat(m.Source)
+		ignored, err := c.recursiveCopy(ctx, m.Source, guestDest)
 		if err != nil {
+			c.Logger().WithField("failed-file", m.Source).Debugf("filed to copy file to sandbox: %v", err)
 			return "", false, err
 		}
-
-		// Ignore the mount if this is not a regular file (excludes
-		// directory, socket, device, ...) as it cannot be handled by
-		// a simple copy. But this should not be treated as an error,
-		// only as a limitation.
-		if !fileInfo.Mode().IsRegular() {
-			c.Logger().WithField("ignored-file", m.Source).Debug("Ignoring non-regular file as FS sharing not supported")
+		if ignored {
 			return "", true, nil
 		}
 
-		if err := c.sandbox.agent.copyFile(ctx, m.Source, guestDest); err != nil {
-			return "", false, err
-		}
 	} else {
 		// These mounts are created in the shared dir
 		mountDest := filepath.Join(getMountPath(c.sandboxID), filename)
