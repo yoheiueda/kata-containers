@@ -23,6 +23,7 @@ import (
 	govmmQemu "github.com/kata-containers/kata-containers/src/runtime/pkg/govmm/qemu"
 	"github.com/kata-containers/kata-containers/src/runtime/pkg/katautils/katatrace"
 	"github.com/kata-containers/kata-containers/src/runtime/pkg/oci"
+	"github.com/kata-containers/kata-containers/src/runtime/virtcontainers"
 	vc "github.com/kata-containers/kata-containers/src/runtime/virtcontainers"
 	exp "github.com/kata-containers/kata-containers/src/runtime/virtcontainers/experimental"
 	"github.com/kata-containers/kata-containers/src/runtime/virtcontainers/utils"
@@ -51,6 +52,7 @@ const (
 	clhHypervisorTableType         = "clh"
 	qemuHypervisorTableType        = "qemu"
 	acrnHypervisorTableType        = "acrn"
+	remoteHypervisorTableType      = "remote"
 
 	// the maximum amount of PCI bridges that can be cold plugged in a VM
 	maxPCIBridges uint32 = 5
@@ -99,6 +101,7 @@ type hypervisor struct {
 	GuestHookPath                  string   `toml:"guest_hook_path"`
 	GuestMemoryDumpPath            string   `toml:"guest_memory_dump_path"`
 	SeccompSandbox                 string   `toml:"seccompsandbox"`
+	RemoteHypervisorSocket         string   `toml:"remote_hypervisor_socket"`
 	HypervisorPathList             []string `toml:"valid_hypervisor_paths"`
 	JailerPathList                 []string `toml:"valid_jailer_paths"`
 	CtlPathList                    []string `toml:"valid_ctlpaths"`
@@ -986,6 +989,18 @@ func newClhHypervisorConfig(h hypervisor) (vc.HypervisorConfig, error) {
 	}, nil
 }
 
+func newRemoteHypervisorConfig(h hypervisor) (vc.HypervisorConfig, error) {
+
+	return vc.HypervisorConfig{
+		RemoteHypervisorSocket: h.RemoteHypervisorSocket,
+		// TODO: The values below are dummy ones to bypass the checks in validateHypervisorConfig
+		KernelPath:            "dummy",
+		ConfidentialGuest:     true,
+		HypervisorMachineType: virtcontainers.QemuCCWVirtio,
+		MemorySize:            h.defaultMemSz(),
+	}, nil
+}
+
 func newFactoryConfig(f factory) (oci.FactoryConfig, error) {
 	if f.TemplatePath == "" {
 		f.TemplatePath = defaultTemplatePath
@@ -1019,6 +1034,9 @@ func updateRuntimeConfigHypervisor(configPath string, tomlConf tomlConfig, confi
 		case clhHypervisorTableType:
 			config.HypervisorType = vc.ClhHypervisor
 			hConfig, err = newClhHypervisorConfig(hypervisor)
+		case remoteHypervisorTableType:
+			config.HypervisorType = vc.RemoteHypervisor
+			hConfig, err = newRemoteHypervisorConfig(hypervisor)
 		}
 
 		if err != nil {
