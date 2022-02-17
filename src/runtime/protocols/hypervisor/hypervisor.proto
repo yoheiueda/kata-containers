@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package hypervisor;
+
+service Hypervisor {
+	rpc CreateSandbox(CreateSandboxRequest) returns (CreateSandboxResponse) {}
+	rpc StartSandbox(StartSandboxRequest) returns (StartSandboxResponse) {}
+	rpc StopSandbox(StopSandboxRequest) returns (StopSandboxResponse) {}
+	rpc Version(VersionRequest) returns (VersionResponse) {}
+}
+
+
+message VersionRequest {
+	string version = 1;
+}
+
+message VersionResponse {
+	string version = 1;
+}
+
+message CreateSandboxRequest {
+	string id = 1;
+	map<string, string> annotations = 2;
+	string networkNamespacePath = 3;
+}
+
+message CreateSandboxResponse {
+	string agentSocketPath = 1;
+}
+
+message StartSandboxRequest {
+	string id = 1;
+}
+
+message StartSandboxResponse {
+}
+
+message StopSandboxRequest {
+	string id = 1;
+}
+
+message StopSandboxResponse {
+}
