@@ -46,6 +46,7 @@ const (
 	clhHypervisorTableType         = "clh"
 	qemuHypervisorTableType        = "qemu"
 	acrnHypervisorTableType        = "acrn"
+	remoteHypervisorTableType      = "remote"
 
 	// the maximum amount of PCI bridges that can be cold plugged in a VM
 	maxPCIBridges uint32 = 5
@@ -136,6 +137,7 @@ type hypervisor struct {
 	GuestSwap               bool     `toml:"enable_guest_swap"`
 	Rootless                bool     `toml:"rootless"`
 	DisableSeccomp          bool     `toml:"disable_seccomp"`
+	RemoteHypervisorSocket  string   `toml:"remove_hypervisor"`
 }
 
 type runtime struct {
@@ -484,6 +486,16 @@ func (h hypervisor) getIOMMUPlatform() bool {
 		kataUtilsLogger.Info("IOMMUPlatform is disabled by default.")
 	}
 	return h.IOMMUPlatform
+}
+
+func (h hypervisor) remoteHypervisorPath() string {
+
+	p := h.RemoteHypervisorSocket
+
+	if p == "" {
+		p = defaultRemoteHypervisorPath
+	}
+	return p
 }
 
 func (a agent) debugConsoleEnabled() bool {
@@ -884,6 +896,14 @@ func newClhHypervisorConfig(h hypervisor) (vc.HypervisorConfig, error) {
 	}, nil
 }
 
+func newRemoteHypervisorConfig(h hypervisor) (vc.HypervisorConfig, error) {
+
+	return vc.HypervisorConfig{
+		MemorySize:             h.defaultMemSz(),
+		RemoteHypervisorSocket: h.RemoteHypervisorSocket,
+	}, nil
+}
+
 func newFactoryConfig(f factory) (oci.FactoryConfig, error) {
 	if f.TemplatePath == "" {
 		f.TemplatePath = defaultTemplatePath
@@ -917,6 +937,9 @@ func updateRuntimeConfigHypervisor(configPath string, tomlConf tomlConfig, confi
 		case clhHypervisorTableType:
 			config.HypervisorType = vc.ClhHypervisor
 			hConfig, err = newClhHypervisorConfig(hypervisor)
+		case remoteHypervisorTableType:
+			config.HypervisorType = vc.RemoteHypervisor
+			hConfig, err = newRemoteHypervisorConfig(hypervisor)
 		}
 
 		if err != nil {

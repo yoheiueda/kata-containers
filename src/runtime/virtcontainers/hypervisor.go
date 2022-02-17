@@ -44,6 +44,9 @@ const (
 	// ClhHypervisor is the ICH hypervisor.
 	ClhHypervisor HypervisorType = "clh"
 
+	// RemoteHypervisor is the Remote hypervisor.
+	RemoteHypervisor HypervisorType = "remote"
+
 	// MockHypervisor is a mock hypervisor for testing purposes
 	MockHypervisor HypervisorType = "mock"
 )
@@ -159,6 +162,9 @@ func (hType *HypervisorType) Set(value string) error {
 	case "clh":
 		*hType = ClhHypervisor
 		return nil
+	case "remote":
+		*hType = RemoteHypervisor
+		return nil
 	case "mock":
 		*hType = MockHypervisor
 		return nil
@@ -178,6 +184,8 @@ func (hType *HypervisorType) String() string {
 		return string(AcrnHypervisor)
 	case ClhHypervisor:
 		return string(ClhHypervisor)
+	case RemoteHypervisor:
+		return string(RemoteHypervisor)
 	case MockHypervisor:
 		return string(MockHypervisor)
 	default:
@@ -207,6 +215,8 @@ func NewHypervisor(hType HypervisorType) (Hypervisor, error) {
 		return &cloudHypervisor{
 			store: store,
 		}, nil
+	case RemoteHypervisor:
+		return &remoteHypervisor{}, nil
 	case MockHypervisor:
 		return &mockHypervisor{}, nil
 	default:
@@ -511,6 +521,9 @@ type HypervisorConfig struct {
 
 	// Disable seccomp from the hypervisor process
 	DisableSeccomp bool
+
+	// RemoteHypervisorSocket is the Unix domain socket path for remote hypervisor
+	RemoteHypervisorSocket string
 }
 
 // vcpu mapping from vcpu number to thread number
