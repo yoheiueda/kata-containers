@@ -794,7 +794,23 @@ func (s *service) Kill(ctx context.Context, r *taskAPI.KillRequest) (_ *ptypes.E
 		return empty, nil
 	}
 
-	return empty, s.sandbox.SignalProcess(spanCtx, c.id, processID, signum, r.All)
+	all := r.All
+	if signum == syscall.SIGKILL && r.ExecID == "" {
+		// FIXME: the containerd CRI plugin sends SIGKILL to a single process of a container when timeout is not set.
+		// If the process has multiple child processes and only the parent process is killed, the child processes
+		// are alive, and  stdio/stderr streams are not closed.  Due to this behavior, "crictl stop" never finishes.
+		// To work around this issue, the all flag is turned on for SIGKILL.
+		// https://github.com/containerd/containerd/blob/v1.5.8/pkg/cri/server/container_stop.go#L167
+
+		shimLog.WithFields(logrus.Fields{
+			"sandbox":   s.sandbox.ID(),
+			"container": c.id,
+			"exec-id":   r.ExecID,
+		}).Debug("kill all processes with SIGKILL")
+		all = true
+	}
+
+	return empty, s.sandbox.SignalProcess(spanCtx, c.id, processID, signum, all)
 }
 
 // Pids returns all pids inside the container
