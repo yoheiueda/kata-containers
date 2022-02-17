@@ -368,6 +368,8 @@ func (k *kataAgent) agentURL() (string, error) {
 		return s.String(), nil
 	case types.HybridVSock:
 		return s.String(), nil
+	case types.RemoteSock:
+		return s.String(), nil
 	case types.MockHybridVSock:
 		return s.String(), nil
 	default:
@@ -418,6 +420,7 @@ func (k *kataAgent) configure(ctx context.Context, h Hypervisor, id, sharePath s
 		if err != nil {
 			return err
 		}
+	case types.RemoteSock:
 	case types.MockHybridVSock:
 	default:
 		return types.ErrInvalidConfigType

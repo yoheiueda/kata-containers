@@ -90,6 +90,7 @@ const defaultRootlessHypervisor = false
 const defaultDisableSeccomp = false
 const defaultVfioMode = "guest-kernel"
 const defaultLegacySerial = false
+const defaultRemoteHypervisorPath = "/run/remote-hypervisor.sock"
 
 var defaultSGXEPCSize = int64(0)
 
