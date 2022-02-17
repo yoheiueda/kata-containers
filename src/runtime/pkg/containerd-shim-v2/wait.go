@@ -28,10 +28,7 @@ func wait(ctx context.Context, s *service, c *container, execID string) (int32, 
 
 	processID := c.id
 
-	if execID == "" {
-		//wait until the io closed, then wait the container
-		<-c.exitIOch
-	} else {
+	if execID != "" {
 		execs, err = c.getExec(execID)
 		if err != nil {
 			return exitCode255, err
