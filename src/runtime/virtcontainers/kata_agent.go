@@ -6,10 +6,12 @@
 package virtcontainers
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -1442,6 +1444,39 @@ func (k *kataAgent) createContainer(ctx context.Context, sandbox *Sandbox, c *Co
 	// passing irrelevant information to the agent.
 	k.constrainGRPCSpec(grpcSpec, passSeccomp, sandbox.config.VfioMode == config.VFIOModeGuestKernel)
 
+	if sandbox.config.HypervisorType == RemoteHypervisor {
+		// shim sends a PullImage request before sending a CreateContainer request
+		// TODO: remove this code when containerd supports the pull image shim API call
+
+		image, err := getImageName(ociSpec.Annotations)
+		if err != nil {
+			return nil, err
+		}
+
+		// Use .docker/config.json to get registry credentials, since
+		// pull secret is not included in the CreateContainer shim request
+		sourceCreds, err := getSourceCreds("/root/.docker/config.json", image)
+		if err != nil {
+			k.Logger().Infof("no source creds available: %v", err)
+		}
+
+		maskedCreds := sourceCreds
+		if i := strings.Index(maskedCreds, ":"); i >= 0 {
+			maskedCreds = maskedCreds[0:i] + ":*****"
+		}
+		k.Logger().WithFields(logrus.Fields{"image": image, "container_id": c.id, "source_creds": maskedCreds}).Info("pull image")
+
+		reqPull := &grpc.PullImageRequest{
+			Image:       image,
+			ContainerId: c.id,
+			SourceCreds: sourceCreds,
+		}
+
+		if _, err = k.sendReq(ctx, reqPull); err != nil {
+			return nil, err
+		}
+	}
+
 	req := &grpc.CreateContainerRequest{
 		ContainerId:  c.id,
 		ExecId:       c.id,
@@ -1456,6 +1491,80 @@ func (k *kataAgent) createContainer(ctx context.Context, sandbox *Sandbox, c *Co
 	}
 
 	return buildProcessFromExecID(req.ExecId)
+}
+
+func getImageName(annotations map[string]string) (string, error) {
+
+	// TODO: Use the annotation constants defined in the packages below
+	//  * github.com/containerd/containerd/blob/main/pkg/cri/annotations
+	//  * github.com/containers/podman/pkg/annotations
+
+	// Note that "io.kubernetes.cri.image-name" is only available with containerd v5 or later
+
+	for _, a := range []string{"io.kubernetes.cri.image-name", "io.kubernetes.cri-o.ImageName"} {
+		if image, ok := annotations[a]; ok {
+			return image, nil
+		}
+	}
+
+	for _, a := range []string{"io.kubernetes.cri.container-type", "io.kubernetes.cri-o.ContainerType"} {
+		if annotations[a] == "sandbox" {
+			// TODO: parameterize the pause container image name
+			return "k8s.gcr.io/pause:3.2", nil
+		}
+	}
+
+	return "", fmt.Errorf("container image name is not specified in annotations: %#v", annotations)
+}
+
+func getSourceCreds(dockerConfigPath, imageName string) (string, error) {
+
+	s := strings.SplitN(imageName, "/", 2)
+	reg := s[0]
+
+	if len(s) < 2 || !strings.ContainsAny(reg, ".:") {
+		// No registry information specified
+		return "", nil
+	}
+
+	if reg == "docker.io" {
+		reg = "index.docker.io"
+	}
+
+	jsonBytes, err := ioutil.ReadFile(dockerConfigPath)
+	if err != nil {
+		return "", fmt.Errorf("failed to read %s: %w", dockerConfigPath, err)
+	}
+
+	var dockerConfig struct {
+		Auths map[string]struct {
+			Auth string `json:"auth"`
+		} `json:"auths"`
+	}
+
+	if err := json.Unmarshal(jsonBytes, &dockerConfig); err != nil {
+		return "", fmt.Errorf("failed to parse JSON data in %s: %w", dockerConfigPath, err)
+	}
+
+	for serverURL, cred := range dockerConfig.Auths {
+
+		u, err := url.Parse(serverURL)
+		if err != nil {
+			return "", fmt.Errorf("failed to parse registry server URL: %s: %w", serverURL, err)
+		}
+
+		if u.Host == reg {
+
+			userpass, err := base64.StdEncoding.DecodeString(cred.Auth)
+			if err != nil {
+				return "", fmt.Errorf("failed to decode registry credential: %s: %w", cred.Auth, err)
+			}
+			return string(userpass), nil
+		}
+	}
+
+	// No registry credential found
+	return "", nil
 }
 
 func buildProcessFromExecID(token string) (*Process, error) {

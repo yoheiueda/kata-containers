@@ -8,6 +8,9 @@ package virtcontainers
 import (
 	"bufio"
 	"context"
+	"encoding/base64"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -1221,4 +1224,45 @@ func TestSandboxBindMount(t *testing.T) {
 	assert.Error(err)
 	assert.True(os.IsNotExist(err))
 
+}
+
+func TestGetSourceCreds(t *testing.T) {
+	assert := assert.New(t)
+
+	username := "user"
+	password := "pass"
+	userpass := fmt.Sprintf("%s:%s", username, password)
+	encoded := base64.StdEncoding.EncodeToString([]byte(userpass))
+
+	dockerConfig := map[string]map[string]map[string]string{
+		"auths": {
+			"https://index.docker.io/v1/": {
+				"auth": encoded,
+			},
+		},
+	}
+
+	jsonBytes, err := json.Marshal(dockerConfig)
+	assert.NoError(err)
+
+	dir := t.TempDir()
+	configJsonPath := filepath.Join(dir, "config.json")
+	notExistPath := filepath.Join(dir, "notexist.json")
+
+	err = ioutil.WriteFile(configJsonPath, jsonBytes, 0666)
+	assert.NoError(err)
+
+	for input, expected := range map[struct{ path, image string }]struct {
+		result string
+		err    error
+	}{
+		{configJsonPath, "docker.io/nginx"}: {userpass, nil},
+		{configJsonPath, "nginx"}:           {"", nil},
+		{notExistPath, "docker.io/nginx"}:   {"", os.ErrNotExist},
+	} {
+		result, err := getSourceCreds(input.path, input.image)
+
+		assert.True(errors.Is(err, expected.err), "path=%q, image=%q", input.path, input.image)
+		assert.Equal(expected.result, result, "path=%q, image=%q", input.path, input.image)
+	}
 }
