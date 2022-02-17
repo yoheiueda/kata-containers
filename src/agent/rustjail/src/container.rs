@@ -1054,6 +1054,15 @@ impl BaseContainer for LinuxContainer {
 
     fn signal(&self, sig: Signal, all: bool) -> Result<()> {
         if all {
+            if let Some(cgm) = &self.cgroup_manager {
+                if let Ok(pids) = cgm.get_pids() {
+                    for pid in pids.iter() {
+                        signal::kill(Pid::from_raw(*pid), Some(sig))?
+                    }
+                    return Ok(());
+                }
+            }
+
             for pid in self.processes.keys() {
                 signal::kill(Pid::from_raw(*pid), Some(sig))?;
             }
