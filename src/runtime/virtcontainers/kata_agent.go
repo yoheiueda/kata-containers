@@ -725,29 +725,35 @@ func (k *kataAgent) startSandbox(ctx context.Context, sandbox *Sandbox) error {
 		return err
 	}
 
-	// Check grpc server is serving
-	if err = k.check(ctx); err != nil {
-		return err
-	}
+	var kmodules []*grpc.KernelModule
 
-	// Setup network interfaces and routes
-	interfaces, routes, neighs, err := generateVCNetworkStructures(ctx, sandbox.network)
-	if err != nil {
-		return err
-	}
-	if err = k.updateInterfaces(ctx, interfaces); err != nil {
-		return err
-	}
-	if _, err = k.updateRoutes(ctx, routes); err != nil {
-		return err
-	}
-	if err = k.addARPNeighbors(ctx, neighs); err != nil {
-		return err
+	if sandbox.config.HypervisorType != RemoteHypervisor {
+		// TODO: Enable the following features for remote hypervisor if necessary
+
+		// Check grpc server is serving
+		if err = k.check(ctx); err != nil {
+			return err
+		}
+
+		// Setup network interfaces and routes
+		interfaces, routes, neighs, err := generateVCNetworkStructures(ctx, sandbox.network)
+		if err != nil {
+			return err
+		}
+		if err = k.updateInterfaces(ctx, interfaces); err != nil {
+			return err
+		}
+		if _, err = k.updateRoutes(ctx, routes); err != nil {
+			return err
+		}
+		if err = k.addARPNeighbors(ctx, neighs); err != nil {
+			return err
+		}
+
+		kmodules = setupKernelModules(k.kmodules)
 	}
 
 	storages := setupStorages(ctx, sandbox)
-
-	kmodules := setupKernelModules(k.kmodules)
 
 	req := &grpc.CreateSandboxRequest{
 		Hostname:      hostname,
