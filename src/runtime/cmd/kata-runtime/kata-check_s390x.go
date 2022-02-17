@@ -55,7 +55,14 @@ func kvmIsUsable() error {
 }
 
 func archHostCanCreateVMContainer(hypervisorType vc.HypervisorType) error {
-	return kvmIsUsable()
+	switch hypervisorType {
+	case "qemu":
+		return kvmIsUsable()
+	case "remote":
+		return nil
+	default:
+		return fmt.Errorf("archHostCanCreateVMContainer: Unknown hypervisor type %s", hypervisorType)
+	}
 }
 
 // hostIsVMContainerCapable checks to see if the host is theoretically capable
