@@ -518,11 +518,17 @@ impl AgentService {
                 p.get_reader(StreamType::TermMaster)
             } else if stdout {
                 if p.parent_stdout.is_some() {
+                    // FIXME: The following line is a workaround for a issue that
+                    // readers for stdout and stderr are not closed when
+                    // processes are killed with SIGKILL
+                    term_exit_notifier = p.term_exit_notifier.clone();
                     p.get_reader(StreamType::ParentStdout)
                 } else {
                     None
                 }
             } else {
+                // FIXME: The following line is the same workaround as the stdout case
+                term_exit_notifier = p.term_exit_notifier.clone();
                 p.get_reader(StreamType::ParentStderr)
             }
         };
