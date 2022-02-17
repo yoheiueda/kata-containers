@@ -51,6 +51,7 @@ const (
 	clhHypervisorTableType         = "clh"
 	qemuHypervisorTableType        = "qemu"
 	acrnHypervisorTableType        = "acrn"
+	remoteHypervisorTableType      = "remote"
 
 	// the maximum amount of PCI bridges that can be cold plugged in a VM
 	maxPCIBridges uint32 = 5
@@ -99,6 +100,7 @@ type hypervisor struct {
 	GuestHookPath                  string   `toml:"guest_hook_path"`
 	GuestMemoryDumpPath            string   `toml:"guest_memory_dump_path"`
 	SeccompSandbox                 string   `toml:"seccompsandbox"`
+	RemoteHypervisorSocket         string   `toml:"remote_hypervisor_socket"`
 	HypervisorPathList             []string `toml:"valid_hypervisor_paths"`
 	JailerPathList                 []string `toml:"valid_jailer_paths"`
 	CtlPathList                    []string `toml:"valid_ctlpaths"`
@@ -989,6 +991,13 @@ func newClhHypervisorConfig(h hypervisor) (vc.HypervisorConfig, error) {
 	}, nil
 }
 
+func newRemoteHypervisorConfig(h hypervisor) (vc.HypervisorConfig, error) {
+
+	return vc.HypervisorConfig{
+		RemoteHypervisorSocket: h.RemoteHypervisorSocket,
+	}, nil
+}
+
 func newFactoryConfig(f factory) (oci.FactoryConfig, error) {
 	if f.TemplatePath == "" {
 		f.TemplatePath = defaultTemplatePath
@@ -1022,6 +1031,9 @@ func updateRuntimeConfigHypervisor(configPath string, tomlConf tomlConfig, confi
 		case clhHypervisorTableType:
 			config.HypervisorType = vc.ClhHypervisor
 			hConfig, err = newClhHypervisorConfig(hypervisor)
+		case remoteHypervisorTableType:
+			config.HypervisorType = vc.RemoteHypervisor
+			hConfig, err = newRemoteHypervisorConfig(hypervisor)
 		}
 
 		if err != nil {
@@ -1564,6 +1576,11 @@ func checkFactoryConfig(config oci.RuntimeConfig) error {
 // checkHypervisorConfig performs basic "sanity checks" on the hypervisor
 // config.
 func checkHypervisorConfig(config vc.HypervisorConfig) error {
+
+	if config.RemoteHypervisorSocket != "" {
+		return nil
+	}
+
 	type image struct {
 		path   string
 		initrd bool
