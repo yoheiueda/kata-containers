@@ -435,7 +435,14 @@ impl AgentService {
             signal = Signal::SIGKILL;
         }
 
-        p.signal(signal)?;
+        if init {
+            let ctr = sandbox
+                .get_container(&cid)
+                .ok_or_else(|| anyhow!("Invalid container id"))?;
+            ctr.signal(signal, true)?;
+        } else {
+            p.signal(signal)?;
+        }
 
         Ok(())
     }
