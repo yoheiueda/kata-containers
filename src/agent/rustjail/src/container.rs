@@ -1056,6 +1056,27 @@ impl BaseContainer for LinuxContainer {
         Ok(())
     }
 
+    fn signal(&self, sig: Signal, all: bool) -> Result<()> {
+        if all {
+            if let Some(cgm) = &self.cgroup_manager {
+                if let Ok(pids) = cgm.get_pids() {
+                    for pid in pids.iter() {
+                        signal::kill(Pid::from_raw(*pid), Some(sig))?
+                    }
+                    return Ok(());
+                }
+            }
+
+            for pid in self.processes.keys() {
+                signal::kill(Pid::from_raw(*pid), Some(sig))?;
+            }
+        }
+
+        signal::kill(Pid::from_raw(self.init_process_pid), Some(sig))?;
+
+        Ok(())
+    }
+
     fn exec(&mut self) -> Result<()> {
         let fifo = format!("{}/{}", &self.root, EXEC_FIFO_FILENAME);
         let fd = fcntl::open(fifo.as_str(), OFlag::O_WRONLY, Mode::from_bits_truncate(0))?;
