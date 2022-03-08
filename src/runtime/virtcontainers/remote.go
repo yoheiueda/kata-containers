@@ -64,13 +64,13 @@ func (rh *remoteHypervisor) CreateVM(ctx context.Context, id string, networkNS N
 
 	annotations := rh.sandbox.config.Containers[0].Annotations
 
-	req := &pb.CreateSandboxRequest{
+	req := &pb.CreateVMRequest{
 		Id:                   id,
 		Annotations:          annotations,
 		NetworkNamespacePath: networkNS.NetNsPath,
 	}
 
-	res, err := s.client.CreateSandbox(context.Background(), req)
+	res, err := s.client.CreateVM(context.Background(), req)
 	if err != nil {
 		return fmt.Errorf("remote hypervisor call failed: %w", err)
 	}
@@ -92,14 +92,14 @@ func (rh *remoteHypervisor) StartVM(ctx context.Context, timeout int) error {
 	}
 	defer s.Close()
 
-	req := &pb.StartSandboxRequest{
+	req := &pb.StartVMRequest{
 		Id: string(rh.sandboxID),
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	defer cancel()
 
-	if _, err := s.client.StartSandbox(ctx, req); err != nil {
+	if _, err := s.client.StartVM(ctx, req); err != nil {
 		return fmt.Errorf("remote hypervisor call failed: %w", err)
 	}
 
@@ -114,11 +114,11 @@ func (rh *remoteHypervisor) StopVM(ctx context.Context, waitOnly bool) error {
 	}
 	defer s.Close()
 
-	req := &pb.StopSandboxRequest{
+	req := &pb.StopVMRequest{
 		Id: string(rh.sandboxID),
 	}
 
-	if _, err := s.client.StopSandbox(context.Background(), req); err != nil {
+	if _, err := s.client.StopVM(context.Background(), req); err != nil {
 		return fmt.Errorf("remote hypervisor call failed: %w", err)
 	}
 
