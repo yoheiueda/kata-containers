@@ -105,7 +105,7 @@ func (m *VersionResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_VersionResponse proto.InternalMessageInfo
 
-type CreateSandboxRequest struct {
+type CreateVMRequest struct {
 	Id                   string            `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Annotations          map[string]string `protobuf:"bytes,2,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	NetworkNamespacePath string            `protobuf:"bytes,3,opt,name=networkNamespacePath,proto3" json:"networkNamespacePath,omitempty"`
@@ -114,17 +114,17 @@ type CreateSandboxRequest struct {
 	XXX_sizecache        int32             `json:"-"`
 }
 
-func (m *CreateSandboxRequest) Reset()      { *m = CreateSandboxRequest{} }
-func (*CreateSandboxRequest) ProtoMessage() {}
-func (*CreateSandboxRequest) Descriptor() ([]byte, []int) {
+func (m *CreateVMRequest) Reset()      { *m = CreateVMRequest{} }
+func (*CreateVMRequest) ProtoMessage() {}
+func (*CreateVMRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7b34fdb27c05edf8, []int{2}
 }
-func (m *CreateSandboxRequest) XXX_Unmarshal(b []byte) error {
+func (m *CreateVMRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *CreateSandboxRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CreateVMRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_CreateSandboxRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CreateVMRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -134,36 +134,36 @@ func (m *CreateSandboxRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *CreateSandboxRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateSandboxRequest.Merge(m, src)
+func (m *CreateVMRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateVMRequest.Merge(m, src)
 }
-func (m *CreateSandboxRequest) XXX_Size() int {
+func (m *CreateVMRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *CreateSandboxRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateSandboxRequest.DiscardUnknown(m)
+func (m *CreateVMRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateVMRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CreateSandboxRequest proto.InternalMessageInfo
+var xxx_messageInfo_CreateVMRequest proto.InternalMessageInfo
 
-type CreateSandboxResponse struct {
+type CreateVMResponse struct {
 	AgentSocketPath      string   `protobuf:"bytes,1,opt,name=agentSocketPath,proto3" json:"agentSocketPath,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *CreateSandboxResponse) Reset()      { *m = CreateSandboxResponse{} }
-func (*CreateSandboxResponse) ProtoMessage() {}
-func (*CreateSandboxResponse) Descriptor() ([]byte, []int) {
+func (m *CreateVMResponse) Reset()      { *m = CreateVMResponse{} }
+func (*CreateVMResponse) ProtoMessage() {}
+func (*CreateVMResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7b34fdb27c05edf8, []int{3}
 }
-func (m *CreateSandboxResponse) XXX_Unmarshal(b []byte) error {
+func (m *CreateVMResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *CreateSandboxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *CreateVMResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_CreateSandboxResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_CreateVMResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -173,36 +173,36 @@ func (m *CreateSandboxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byt
 		return b[:n], nil
 	}
 }
-func (m *CreateSandboxResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CreateSandboxResponse.Merge(m, src)
+func (m *CreateVMResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateVMResponse.Merge(m, src)
 }
-func (m *CreateSandboxResponse) XXX_Size() int {
+func (m *CreateVMResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *CreateSandboxResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_CreateSandboxResponse.DiscardUnknown(m)
+func (m *CreateVMResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateVMResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CreateSandboxResponse proto.InternalMessageInfo
+var xxx_messageInfo_CreateVMResponse proto.InternalMessageInfo
 
-type StartSandboxRequest struct {
+type StartVMRequest struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *StartSandboxRequest) Reset()      { *m = StartSandboxRequest{} }
-func (*StartSandboxRequest) ProtoMessage() {}
-func (*StartSandboxRequest) Descriptor() ([]byte, []int) {
+func (m *StartVMRequest) Reset()      { *m = StartVMRequest{} }
+func (*StartVMRequest) ProtoMessage() {}
+func (*StartVMRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7b34fdb27c05edf8, []int{4}
 }
-func (m *StartSandboxRequest) XXX_Unmarshal(b []byte) error {
+func (m *StartVMRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *StartSandboxRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *StartVMRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_StartSandboxRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_StartVMRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -212,35 +212,35 @@ func (m *StartSandboxRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *StartSandboxRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_StartSandboxRequest.Merge(m, src)
+func (m *StartVMRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StartVMRequest.Merge(m, src)
 }
-func (m *StartSandboxRequest) XXX_Size() int {
+func (m *StartVMRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *StartSandboxRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_StartSandboxRequest.DiscardUnknown(m)
+func (m *StartVMRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_StartVMRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_StartSandboxRequest proto.InternalMessageInfo
+var xxx_messageInfo_StartVMRequest proto.InternalMessageInfo
 
-type StartSandboxResponse struct {
+type StartVMResponse struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *StartSandboxResponse) Reset()      { *m = StartSandboxResponse{} }
-func (*StartSandboxResponse) ProtoMessage() {}
-func (*StartSandboxResponse) Descriptor() ([]byte, []int) {
+func (m *StartVMResponse) Reset()      { *m = StartVMResponse{} }
+func (*StartVMResponse) ProtoMessage() {}
+func (*StartVMResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7b34fdb27c05edf8, []int{5}
 }
-func (m *StartSandboxResponse) XXX_Unmarshal(b []byte) error {
+func (m *StartVMResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *StartSandboxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *StartVMResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_StartSandboxResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_StartVMResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -250,36 +250,36 @@ func (m *StartSandboxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte
 		return b[:n], nil
 	}
 }
-func (m *StartSandboxResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_StartSandboxResponse.Merge(m, src)
+func (m *StartVMResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StartVMResponse.Merge(m, src)
 }
-func (m *StartSandboxResponse) XXX_Size() int {
+func (m *StartVMResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *StartSandboxResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_StartSandboxResponse.DiscardUnknown(m)
+func (m *StartVMResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_StartVMResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_StartSandboxResponse proto.InternalMessageInfo
+var xxx_messageInfo_StartVMResponse proto.InternalMessageInfo
 
-type StopSandboxRequest struct {
+type StopVMRequest struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *StopSandboxRequest) Reset()      { *m = StopSandboxRequest{} }
-func (*StopSandboxRequest) ProtoMessage() {}
-func (*StopSandboxRequest) Descriptor() ([]byte, []int) {
+func (m *StopVMRequest) Reset()      { *m = StopVMRequest{} }
+func (*StopVMRequest) ProtoMessage() {}
+func (*StopVMRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7b34fdb27c05edf8, []int{6}
 }
-func (m *StopSandboxRequest) XXX_Unmarshal(b []byte) error {
+func (m *StopVMRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *StopSandboxRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *StopVMRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_StopSandboxRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_StopVMRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -289,35 +289,35 @@ func (m *StopSandboxRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, 
 		return b[:n], nil
 	}
 }
-func (m *StopSandboxRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_StopSandboxRequest.Merge(m, src)
+func (m *StopVMRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StopVMRequest.Merge(m, src)
 }
-func (m *StopSandboxRequest) XXX_Size() int {
+func (m *StopVMRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *StopSandboxRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_StopSandboxRequest.DiscardUnknown(m)
+func (m *StopVMRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_StopVMRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_StopSandboxRequest proto.InternalMessageInfo
+var xxx_messageInfo_StopVMRequest proto.InternalMessageInfo
 
-type StopSandboxResponse struct {
+type StopVMResponse struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *StopSandboxResponse) Reset()      { *m = StopSandboxResponse{} }
-func (*StopSandboxResponse) ProtoMessage() {}
-func (*StopSandboxResponse) Descriptor() ([]byte, []int) {
+func (m *StopVMResponse) Reset()      { *m = StopVMResponse{} }
+func (*StopVMResponse) ProtoMessage() {}
+func (*StopVMResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7b34fdb27c05edf8, []int{7}
 }
-func (m *StopSandboxResponse) XXX_Unmarshal(b []byte) error {
+func (m *StopVMResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *StopSandboxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *StopVMResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_StopSandboxResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_StopVMResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -327,60 +327,59 @@ func (m *StopSandboxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
-func (m *StopSandboxResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_StopSandboxResponse.Merge(m, src)
+func (m *StopVMResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_StopVMResponse.Merge(m, src)
 }
-func (m *StopSandboxResponse) XXX_Size() int {
+func (m *StopVMResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *StopSandboxResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_StopSandboxResponse.DiscardUnknown(m)
+func (m *StopVMResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_StopVMResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_StopSandboxResponse proto.InternalMessageInfo
+var xxx_messageInfo_StopVMResponse proto.InternalMessageInfo
 
 func init() {
 	proto.RegisterType((*VersionRequest)(nil), "hypervisor.VersionRequest")
 	proto.RegisterType((*VersionResponse)(nil), "hypervisor.VersionResponse")
-	proto.RegisterType((*CreateSandboxRequest)(nil), "hypervisor.CreateSandboxRequest")
-	proto.RegisterMapType((map[string]string)(nil), "hypervisor.CreateSandboxRequest.AnnotationsEntry")
-	proto.RegisterType((*CreateSandboxResponse)(nil), "hypervisor.CreateSandboxResponse")
-	proto.RegisterType((*StartSandboxRequest)(nil), "hypervisor.StartSandboxRequest")
-	proto.RegisterType((*StartSandboxResponse)(nil), "hypervisor.StartSandboxResponse")
-	proto.RegisterType((*StopSandboxRequest)(nil), "hypervisor.StopSandboxRequest")
-	proto.RegisterType((*StopSandboxResponse)(nil), "hypervisor.StopSandboxResponse")
+	proto.RegisterType((*CreateVMRequest)(nil), "hypervisor.CreateVMRequest")
+	proto.RegisterMapType((map[string]string)(nil), "hypervisor.CreateVMRequest.AnnotationsEntry")
+	proto.RegisterType((*CreateVMResponse)(nil), "hypervisor.CreateVMResponse")
+	proto.RegisterType((*StartVMRequest)(nil), "hypervisor.StartVMRequest")
+	proto.RegisterType((*StartVMResponse)(nil), "hypervisor.StartVMResponse")
+	proto.RegisterType((*StopVMRequest)(nil), "hypervisor.StopVMRequest")
+	proto.RegisterType((*StopVMResponse)(nil), "hypervisor.StopVMResponse")
 }
 
 func init() { proto.RegisterFile("hypervisor.proto", fileDescriptor_7b34fdb27c05edf8) }
 
 var fileDescriptor_7b34fdb27c05edf8 = []byte{
-	// 401 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x53, 0xcf, 0x6b, 0xe2, 0x40,
-	0x14, 0x76, 0x22, 0xbb, 0xb2, 0xcf, 0x5d, 0x95, 0xd9, 0xb8, 0x84, 0x2c, 0xc4, 0x6c, 0xd8, 0x82,
-	0xb4, 0x20, 0xd4, 0x5e, 0x4a, 0x0f, 0x05, 0xfb, 0x03, 0x7a, 0x2a, 0x62, 0xc0, 0xfb, 0xa8, 0x43,
-	0x0d, 0xb6, 0x33, 0xe9, 0x64, 0xb4, 0xf5, 0xd6, 0x3f, 0xcf, 0x63, 0x7b, 0xeb, 0xb1, 0xe6, 0x1f,
-	0xe8, 0xbf, 0x50, 0x4c, 0x62, 0x4c, 0x42, 0xd4, 0x5b, 0xe6, 0xbd, 0xef, 0xfb, 0xde, 0xf7, 0xbe,
-	0xcc, 0x40, 0x6d, 0x3c, 0x77, 0xa9, 0x98, 0x39, 0x1e, 0x17, 0x2d, 0x57, 0x70, 0xc9, 0x31, 0x6c,
-	0x2a, 0xd6, 0x21, 0x54, 0xfa, 0x54, 0x78, 0x0e, 0x67, 0x3d, 0xfa, 0x38, 0xa5, 0x9e, 0xc4, 0x1a,
-	0x94, 0x66, 0x61, 0x45, 0x43, 0x26, 0x6a, 0xfe, 0xe8, 0xad, 0x8f, 0xd6, 0x11, 0x54, 0x63, 0xac,
-	0xe7, 0x72, 0xe6, 0xd1, 0x1d, 0xe0, 0x4f, 0x04, 0xea, 0xa5, 0xa0, 0x44, 0x52, 0x9b, 0xb0, 0xd1,
-	0x80, 0x3f, 0xaf, 0xf5, 0x2b, 0xa0, 0x38, 0xa3, 0x08, 0xad, 0x38, 0x23, 0x6c, 0x43, 0x99, 0x30,
-	0xc6, 0x25, 0x91, 0x0e, 0x67, 0x9e, 0xa6, 0x98, 0xc5, 0x66, 0xb9, 0x7d, 0xdc, 0x4a, 0xb8, 0xce,
-	0x93, 0x69, 0x75, 0x36, 0x9c, 0x6b, 0x26, 0xc5, 0xbc, 0x97, 0x54, 0xc1, 0x6d, 0x50, 0x19, 0x95,
-	0x4f, 0x5c, 0x4c, 0x6e, 0xc9, 0x03, 0xf5, 0x5c, 0x32, 0xa4, 0x5d, 0x22, 0xc7, 0x5a, 0x31, 0x18,
-	0x9b, 0xdb, 0xd3, 0xcf, 0xa1, 0x96, 0x15, 0xc5, 0x35, 0x28, 0x4e, 0xe8, 0x3c, 0x72, 0xbb, 0xfa,
-	0xc4, 0x2a, 0x7c, 0x9b, 0x91, 0xfb, 0x29, 0xd5, 0x94, 0xa0, 0x16, 0x1e, 0xce, 0x94, 0x53, 0x64,
-	0x75, 0xa0, 0x9e, 0x71, 0x1a, 0x85, 0xd4, 0x84, 0x2a, 0xb9, 0xa3, 0x4c, 0xda, 0x7c, 0x38, 0xa1,
-	0x32, 0xf0, 0x11, 0x0a, 0x66, 0xcb, 0xd6, 0x01, 0xfc, 0xb6, 0x25, 0x11, 0x72, 0x77, 0x64, 0xd6,
-	0x1f, 0x50, 0xd3, 0xb0, 0x70, 0x90, 0xf5, 0x1f, 0xb0, 0x2d, 0xb9, 0xbb, 0x87, 0x5d, 0x5f, 0x0d,
-	0x49, 0xa0, 0x42, 0x72, 0xfb, 0x4d, 0x01, 0xb8, 0x89, 0x43, 0xc7, 0x7d, 0xf8, 0x95, 0xda, 0x06,
-	0x9b, 0xfb, 0x7e, 0x89, 0xfe, 0x6f, 0x07, 0x22, 0x72, 0x58, 0xc0, 0x36, 0xfc, 0x4c, 0x7a, 0xc7,
-	0x8d, 0x24, 0x29, 0x67, 0x79, 0xdd, 0xdc, 0x0e, 0x88, 0x45, 0xbb, 0x50, 0x4e, 0xac, 0x84, 0x8d,
-	0x34, 0x25, 0x9b, 0x88, 0xde, 0xd8, 0xda, 0x8f, 0x15, 0xaf, 0xa0, 0x14, 0xdd, 0x75, 0xac, 0x27,
-	0xd1, 0xe9, 0xc7, 0xa2, 0xff, 0xcd, 0xed, 0xad, 0x55, 0x2e, 0xb4, 0xc5, 0xd2, 0x28, 0xbc, 0x2f,
-	0x8d, 0xc2, 0x8b, 0x6f, 0xa0, 0x85, 0x6f, 0xa0, 0x57, 0xdf, 0x40, 0x1f, 0xbe, 0x81, 0x06, 0xdf,
-	0x83, 0xa7, 0x78, 0xf2, 0x15, 0x00, 0x00, 0xff, 0xff, 0x2f, 0x34, 0xf4, 0xd9, 0x9e, 0x03, 0x00,
-	0x00,
+	// 390 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x93, 0xcf, 0x4e, 0xf2, 0x40,
+	0x14, 0xc5, 0x3b, 0x25, 0x1f, 0x7c, 0x5e, 0x22, 0xad, 0x13, 0x16, 0xb5, 0x98, 0x4a, 0xba, 0x22,
+	0x6a, 0x58, 0xe0, 0xc6, 0x18, 0x63, 0x82, 0x7f, 0xa2, 0x1b, 0x89, 0x81, 0x84, 0xfd, 0x08, 0x13,
+	0x69, 0xd0, 0x99, 0x3a, 0x1d, 0x30, 0xec, 0x7c, 0x18, 0x1f, 0x86, 0xa5, 0x4b, 0x97, 0xd2, 0xc4,
+	0xf7, 0x30, 0xb4, 0xa5, 0xb4, 0x4d, 0x61, 0xd7, 0xb9, 0xf7, 0xcc, 0xe9, 0xef, 0x9e, 0xdc, 0x01,
+	0x7d, 0x34, 0x73, 0xa9, 0x98, 0x3a, 0x1e, 0x17, 0x4d, 0x57, 0x70, 0xc9, 0x31, 0xac, 0x2b, 0xf6,
+	0x11, 0x54, 0xfa, 0x54, 0x78, 0x0e, 0x67, 0x5d, 0xfa, 0x36, 0xa1, 0x9e, 0xc4, 0x06, 0x94, 0xa6,
+	0x61, 0xc5, 0x40, 0x75, 0xd4, 0xd8, 0xe9, 0xae, 0x8e, 0xf6, 0x31, 0x68, 0xb1, 0xd6, 0x73, 0x39,
+	0xf3, 0xe8, 0x16, 0xf1, 0x2f, 0x02, 0xed, 0x5a, 0x50, 0x22, 0x69, 0xff, 0x61, 0x65, 0x5d, 0x01,
+	0xd5, 0x19, 0x46, 0x42, 0xd5, 0x19, 0xe2, 0x0e, 0x94, 0x09, 0x63, 0x5c, 0x12, 0xe9, 0x70, 0xe6,
+	0x19, 0x6a, 0xbd, 0xd0, 0x28, 0xb7, 0x4e, 0x9a, 0x09, 0xe0, 0x8c, 0x43, 0xb3, 0xbd, 0x96, 0xdf,
+	0x32, 0x29, 0x66, 0xdd, 0xa4, 0x01, 0x6e, 0x41, 0x95, 0x51, 0xf9, 0xce, 0xc5, 0xb8, 0x43, 0x5e,
+	0xa9, 0xe7, 0x92, 0x01, 0x7d, 0x24, 0x72, 0x64, 0x14, 0x82, 0x3f, 0xe6, 0xf6, 0xcc, 0x4b, 0xd0,
+	0xb3, 0xa6, 0x58, 0x87, 0xc2, 0x98, 0xce, 0x22, 0xd0, 0xe5, 0x27, 0xae, 0xc2, 0xbf, 0x29, 0x79,
+	0x99, 0x50, 0x43, 0x0d, 0x6a, 0xe1, 0xe1, 0x5c, 0x3d, 0x43, 0xf6, 0x05, 0xe8, 0x6b, 0xc8, 0x28,
+	0x95, 0x06, 0x68, 0xe4, 0x99, 0x32, 0xd9, 0xe3, 0x83, 0x31, 0x95, 0x01, 0x42, 0xe8, 0x95, 0x2d,
+	0xdb, 0x75, 0xa8, 0xf4, 0x24, 0x11, 0x72, 0x63, 0x46, 0xf6, 0x1e, 0x68, 0xb1, 0x22, 0xb4, 0xb7,
+	0x0f, 0x61, 0xb7, 0x27, 0xb9, 0xbb, 0xf9, 0x8e, 0xbe, 0x74, 0x0d, 0x05, 0xe1, 0x95, 0xd6, 0xa7,
+	0x0a, 0x70, 0x1f, 0xc7, 0x8a, 0xef, 0xe0, 0xff, 0x0a, 0x1a, 0xd7, 0xb6, 0xe4, 0x6d, 0x1e, 0xe4,
+	0x37, 0x23, 0x10, 0x05, 0xdf, 0x40, 0x29, 0xa2, 0xc3, 0x66, 0x52, 0x9a, 0x1e, 0xca, 0xac, 0xe5,
+	0xf6, 0x62, 0x97, 0x36, 0x14, 0x43, 0x5e, 0xbc, 0x9f, 0x16, 0x26, 0x86, 0x34, 0xcd, 0xbc, 0x56,
+	0x12, 0x24, 0xda, 0xcd, 0x34, 0x48, 0x7a, 0xb9, 0xd3, 0x20, 0x99, 0x65, 0xb6, 0x95, 0x2b, 0x63,
+	0xbe, 0xb0, 0x94, 0xef, 0x85, 0xa5, 0x7c, 0xf8, 0x16, 0x9a, 0xfb, 0x16, 0xfa, 0xf2, 0x2d, 0xf4,
+	0xe3, 0x5b, 0xe8, 0xa9, 0x18, 0x3c, 0x9d, 0xd3, 0xbf, 0x00, 0x00, 0x00, 0xff, 0xff, 0xfe, 0xc0,
+	0xa3, 0xa4, 0x4e, 0x03, 0x00, 0x00,
 }
 
 func (m *VersionRequest) Marshal() (dAtA []byte, err error) {
@@ -451,7 +450,7 @@ func (m *VersionResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *CreateSandboxRequest) Marshal() (dAtA []byte, err error) {
+func (m *CreateVMRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -461,12 +460,12 @@ func (m *CreateSandboxRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *CreateSandboxRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *CreateVMRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *CreateSandboxRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CreateVMRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -511,7 +510,7 @@ func (m *CreateSandboxRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *CreateSandboxResponse) Marshal() (dAtA []byte, err error) {
+func (m *CreateVMResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -521,12 +520,12 @@ func (m *CreateSandboxResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *CreateSandboxResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *CreateVMResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *CreateSandboxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *CreateVMResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -545,7 +544,7 @@ func (m *CreateSandboxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *StartSandboxRequest) Marshal() (dAtA []byte, err error) {
+func (m *StartVMRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -555,12 +554,12 @@ func (m *StartSandboxRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *StartSandboxRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *StartVMRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *StartSandboxRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *StartVMRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -579,7 +578,7 @@ func (m *StartSandboxRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *StartSandboxResponse) Marshal() (dAtA []byte, err error) {
+func (m *StartVMResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -589,12 +588,12 @@ func (m *StartSandboxResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *StartSandboxResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *StartVMResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *StartSandboxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *StartVMResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -606,7 +605,7 @@ func (m *StartSandboxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *StopSandboxRequest) Marshal() (dAtA []byte, err error) {
+func (m *StopVMRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -616,12 +615,12 @@ func (m *StopSandboxRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *StopSandboxRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *StopVMRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *StopSandboxRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *StopVMRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -640,7 +639,7 @@ func (m *StopSandboxRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *StopSandboxResponse) Marshal() (dAtA []byte, err error) {
+func (m *StopVMResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -650,12 +649,12 @@ func (m *StopSandboxResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *StopSandboxResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *StopVMResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *StopSandboxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *StopVMResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -710,7 +709,7 @@ func (m *VersionResponse) Size() (n int) {
 	return n
 }
 
-func (m *CreateSandboxRequest) Size() (n int) {
+func (m *CreateVMRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -738,7 +737,7 @@ func (m *CreateSandboxRequest) Size() (n int) {
 	return n
 }
 
-func (m *CreateSandboxResponse) Size() (n int) {
+func (m *CreateVMResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -754,7 +753,7 @@ func (m *CreateSandboxResponse) Size() (n int) {
 	return n
 }
 
-func (m *StartSandboxRequest) Size() (n int) {
+func (m *StartVMRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -770,7 +769,7 @@ func (m *StartSandboxRequest) Size() (n int) {
 	return n
 }
 
-func (m *StartSandboxResponse) Size() (n int) {
+func (m *StartVMResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -782,7 +781,7 @@ func (m *StartSandboxResponse) Size() (n int) {
 	return n
 }
 
-func (m *StopSandboxRequest) Size() (n int) {
+func (m *StopVMRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -798,7 +797,7 @@ func (m *StopSandboxRequest) Size() (n int) {
 	return n
 }
 
-func (m *StopSandboxResponse) Size() (n int) {
+func (m *StopVMResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -838,7 +837,7 @@ func (this *VersionResponse) String() string {
 	}, "")
 	return s
 }
-func (this *CreateSandboxRequest) String() string {
+func (this *CreateVMRequest) String() string {
 	if this == nil {
 		return "nil"
 	}
@@ -852,7 +851,7 @@ func (this *CreateSandboxRequest) String() string {
 		mapStringForAnnotations += fmt.Sprintf("%v: %v,", k, this.Annotations[k])
 	}
 	mapStringForAnnotations += "}"
-	s := strings.Join([]string{`&CreateSandboxRequest{`,
+	s := strings.Join([]string{`&CreateVMRequest{`,
 		`Id:` + fmt.Sprintf("%v", this.Id) + `,`,
 		`Annotations:` + mapStringForAnnotations + `,`,
 		`NetworkNamespacePath:` + fmt.Sprintf("%v", this.NetworkNamespacePath) + `,`,
@@ -861,54 +860,54 @@ func (this *CreateSandboxRequest) String() string {
 	}, "")
 	return s
 }
-func (this *CreateSandboxResponse) String() string {
+func (this *CreateVMResponse) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&CreateSandboxResponse{`,
+	s := strings.Join([]string{`&CreateVMResponse{`,
 		`AgentSocketPath:` + fmt.Sprintf("%v", this.AgentSocketPath) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *StartSandboxRequest) String() string {
+func (this *StartVMRequest) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&StartSandboxRequest{`,
+	s := strings.Join([]string{`&StartVMRequest{`,
 		`Id:` + fmt.Sprintf("%v", this.Id) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *StartSandboxResponse) String() string {
+func (this *StartVMResponse) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&StartSandboxResponse{`,
+	s := strings.Join([]string{`&StartVMResponse{`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *StopSandboxRequest) String() string {
+func (this *StopVMRequest) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&StopSandboxRequest{`,
+	s := strings.Join([]string{`&StopVMRequest{`,
 		`Id:` + fmt.Sprintf("%v", this.Id) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-func (this *StopSandboxResponse) String() string {
+func (this *StopVMResponse) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&StopSandboxResponse{`,
+	s := strings.Join([]string{`&StopVMResponse{`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
@@ -924,34 +923,34 @@ func valueToStringHypervisor(v interface{}) string {
 }
 
 type HypervisorService interface {
-	CreateSandbox(ctx context.Context, req *CreateSandboxRequest) (*CreateSandboxResponse, error)
-	StartSandbox(ctx context.Context, req *StartSandboxRequest) (*StartSandboxResponse, error)
-	StopSandbox(ctx context.Context, req *StopSandboxRequest) (*StopSandboxResponse, error)
+	CreateVM(ctx context.Context, req *CreateVMRequest) (*CreateVMResponse, error)
+	StartVM(ctx context.Context, req *StartVMRequest) (*StartVMResponse, error)
+	StopVM(ctx context.Context, req *StopVMRequest) (*StopVMResponse, error)
 	Version(ctx context.Context, req *VersionRequest) (*VersionResponse, error)
 }
 
 func RegisterHypervisorService(srv *github_com_containerd_ttrpc.Server, svc HypervisorService) {
 	srv.Register("hypervisor.Hypervisor", map[string]github_com_containerd_ttrpc.Method{
-		"CreateSandbox": func(ctx context.Context, unmarshal func(interface{}) error) (interface{}, error) {
-			var req CreateSandboxRequest
+		"CreateVM": func(ctx context.Context, unmarshal func(interface{}) error) (interface{}, error) {
+			var req CreateVMRequest
 			if err := unmarshal(&req); err != nil {
 				return nil, err
 			}
-			return svc.CreateSandbox(ctx, &req)
+			return svc.CreateVM(ctx, &req)
 		},
-		"StartSandbox": func(ctx context.Context, unmarshal func(interface{}) error) (interface{}, error) {
-			var req StartSandboxRequest
+		"StartVM": func(ctx context.Context, unmarshal func(interface{}) error) (interface{}, error) {
+			var req StartVMRequest
 			if err := unmarshal(&req); err != nil {
 				return nil, err
 			}
-			return svc.StartSandbox(ctx, &req)
+			return svc.StartVM(ctx, &req)
 		},
-		"StopSandbox": func(ctx context.Context, unmarshal func(interface{}) error) (interface{}, error) {
-			var req StopSandboxRequest
+		"StopVM": func(ctx context.Context, unmarshal func(interface{}) error) (interface{}, error) {
+			var req StopVMRequest
 			if err := unmarshal(&req); err != nil {
 				return nil, err
 			}
-			return svc.StopSandbox(ctx, &req)
+			return svc.StopVM(ctx, &req)
 		},
 		"Version": func(ctx context.Context, unmarshal func(interface{}) error) (interface{}, error) {
 			var req VersionRequest
@@ -973,25 +972,25 @@ func NewHypervisorClient(client *github_com_containerd_ttrpc.Client) HypervisorS
 	}
 }
 
-func (c *hypervisorClient) CreateSandbox(ctx context.Context, req *CreateSandboxRequest) (*CreateSandboxResponse, error) {
-	var resp CreateSandboxResponse
-	if err := c.client.Call(ctx, "hypervisor.Hypervisor", "CreateSandbox", req, &resp); err != nil {
+func (c *hypervisorClient) CreateVM(ctx context.Context, req *CreateVMRequest) (*CreateVMResponse, error) {
+	var resp CreateVMResponse
+	if err := c.client.Call(ctx, "hypervisor.Hypervisor", "CreateVM", req, &resp); err != nil {
 		return nil, err
 	}
 	return &resp, nil
 }
 
-func (c *hypervisorClient) StartSandbox(ctx context.Context, req *StartSandboxRequest) (*StartSandboxResponse, error) {
-	var resp StartSandboxResponse
-	if err := c.client.Call(ctx, "hypervisor.Hypervisor", "StartSandbox", req, &resp); err != nil {
+func (c *hypervisorClient) StartVM(ctx context.Context, req *StartVMRequest) (*StartVMResponse, error) {
+	var resp StartVMResponse
+	if err := c.client.Call(ctx, "hypervisor.Hypervisor", "StartVM", req, &resp); err != nil {
 		return nil, err
 	}
 	return &resp, nil
 }
 
-func (c *hypervisorClient) StopSandbox(ctx context.Context, req *StopSandboxRequest) (*StopSandboxResponse, error) {
-	var resp StopSandboxResponse
-	if err := c.client.Call(ctx, "hypervisor.Hypervisor", "StopSandbox", req, &resp); err != nil {
+func (c *hypervisorClient) StopVM(ctx context.Context, req *StopVMRequest) (*StopVMResponse, error) {
+	var resp StopVMResponse
+	if err := c.client.Call(ctx, "hypervisor.Hypervisor", "StopVM", req, &resp); err != nil {
 		return nil, err
 	}
 	return &resp, nil
@@ -1071,10 +1070,7 @@ func (m *VersionRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHypervisor
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHypervisor
 			}
 			if (iNdEx + skippy) > l {
@@ -1157,10 +1153,7 @@ func (m *VersionResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHypervisor
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHypervisor
 			}
 			if (iNdEx + skippy) > l {
@@ -1176,7 +1169,7 @@ func (m *VersionResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *CreateSandboxRequest) Unmarshal(dAtA []byte) error {
+func (m *CreateVMRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1199,10 +1192,10 @@ func (m *CreateSandboxRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CreateSandboxRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: CreateVMRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CreateSandboxRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CreateVMRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1353,7 +1346,7 @@ func (m *CreateSandboxRequest) Unmarshal(dAtA []byte) error {
 					if err != nil {
 						return err
 					}
-					if skippy < 0 {
+					if (skippy < 0) || (iNdEx+skippy) < 0 {
 						return ErrInvalidLengthHypervisor
 					}
 					if (iNdEx + skippy) > postIndex {
@@ -1402,10 +1395,7 @@ func (m *CreateSandboxRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHypervisor
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHypervisor
 			}
 			if (iNdEx + skippy) > l {
@@ -1421,7 +1411,7 @@ func (m *CreateSandboxRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *CreateSandboxResponse) Unmarshal(dAtA []byte) error {
+func (m *CreateVMResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1444,10 +1434,10 @@ func (m *CreateSandboxResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: CreateSandboxResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: CreateVMResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: CreateSandboxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: CreateVMResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1488,10 +1478,7 @@ func (m *CreateSandboxResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHypervisor
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHypervisor
 			}
 			if (iNdEx + skippy) > l {
@@ -1507,7 +1494,7 @@ func (m *CreateSandboxResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *StartSandboxRequest) Unmarshal(dAtA []byte) error {
+func (m *StartVMRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1530,10 +1517,10 @@ func (m *StartSandboxRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: StartSandboxRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: StartVMRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: StartSandboxRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: StartVMRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1574,10 +1561,7 @@ func (m *StartSandboxRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHypervisor
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHypervisor
 			}
 			if (iNdEx + skippy) > l {
@@ -1593,7 +1577,7 @@ func (m *StartSandboxRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *StartSandboxResponse) Unmarshal(dAtA []byte) error {
+func (m *StartVMResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1616,10 +1600,10 @@ func (m *StartSandboxResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: StartSandboxResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: StartVMResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: StartSandboxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: StartVMResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1628,10 +1612,7 @@ func (m *StartSandboxResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHypervisor
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHypervisor
 			}
 			if (iNdEx + skippy) > l {
@@ -1647,7 +1628,7 @@ func (m *StartSandboxResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *StopSandboxRequest) Unmarshal(dAtA []byte) error {
+func (m *StopVMRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1670,10 +1651,10 @@ func (m *StopSandboxRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: StopSandboxRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: StopVMRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: StopSandboxRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: StopVMRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -1714,10 +1695,7 @@ func (m *StopSandboxRequest) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHypervisor
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHypervisor
 			}
 			if (iNdEx + skippy) > l {
@@ -1733,7 +1711,7 @@ func (m *StopSandboxRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *StopSandboxResponse) Unmarshal(dAtA []byte) error {
+func (m *StopVMResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1756,10 +1734,10 @@ func (m *StopSandboxResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: StopSandboxResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: StopVMResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: StopSandboxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: StopVMResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
@@ -1768,10 +1746,7 @@ func (m *StopSandboxResponse) Unmarshal(dAtA []byte) error {
 			if err != nil {
 				return err
 			}
-			if skippy < 0 {
-				return ErrInvalidLengthHypervisor
-			}
-			if (iNdEx + skippy) < 0 {
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
 				return ErrInvalidLengthHypervisor
 			}
 			if (iNdEx + skippy) > l {

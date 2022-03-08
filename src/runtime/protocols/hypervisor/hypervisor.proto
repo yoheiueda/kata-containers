@@ -3,9 +3,9 @@ syntax = "proto3";
 package hypervisor;
 
 service Hypervisor {
-	rpc CreateSandbox(CreateSandboxRequest) returns (CreateSandboxResponse) {}
-	rpc StartSandbox(StartSandboxRequest) returns (StartSandboxResponse) {}
-	rpc StopSandbox(StopSandboxRequest) returns (StopSandboxResponse) {}
+	rpc CreateVM(CreateVMRequest) returns (CreateVMResponse) {}
+	rpc StartVM(StartVMRequest) returns (StartVMResponse) {}
+	rpc StopVM(StopVMRequest) returns (StopVMResponse) {}
 	rpc Version(VersionRequest) returns (VersionResponse) {}
 }
 
@@ -18,26 +18,26 @@ message VersionResponse {
 	string version = 1;
 }
 
-message CreateSandboxRequest {
+message CreateVMRequest {
 	string id = 1;
 	map<string, string> annotations = 2;
 	string networkNamespacePath = 3;
 }
 
-message CreateSandboxResponse {
+message CreateVMResponse {
 	string agentSocketPath = 1;
 }
 
-message StartSandboxRequest {
+message StartVMRequest {
 	string id = 1;
 }
 
-message StartSandboxResponse {
+message StartVMResponse {
 }
 
-message StopSandboxRequest {
+message StopVMRequest {
 	string id = 1;
 }
 
-message StopSandboxResponse {
+message StopVMResponse {
 }
