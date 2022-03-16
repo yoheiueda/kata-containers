@@ -107,14 +107,14 @@ logging-crate-tests:
 	make -C $(CWD)/../../pkg/logging
 
 $(TARGET_PATH): $(SOURCES) | show-summary
-	@RUSTFLAGS="$(EXTRA_RUSTFLAGS) --deny warnings" cargo build --target $(TRIPLE) --$(BUILD_TYPE) $(EXTRA_RUSTFEATURES)
+	@RUSTFLAGS="$(EXTRA_RUSTFLAGS) --deny warnings" cargo build --target $(TRIPLE) $(if $(findstring release,$(BUILD_TYPE)),--release) $(EXTRA_RUSTFEATURES)
 
 $(GENERATED_FILES): %: %.in
 	@sed $(foreach r,$(GENERATED_REPLACEMENTS),-e 's|@$r@|$($r)|g') "$<" > "$@"
 
 ##TARGET optimize: optimized  build
 optimize: $(SOURCES) | show-summary show-header
-	@RUSTFLAGS="-C link-arg=-s $(EXTRA_RUSTFLAGS) --deny-warnings" cargo build --target $(TRIPLE) --$(BUILD_TYPE) $(EXTRA_RUSTFEATURES)
+	@RUSTFLAGS="-C link-arg=-s $(EXTRA_RUSTFLAGS) --deny-warnings" cargo build --target $(TRIPLE) $(if $(findstring release,$(BUILD_TYPE)),--release) $(EXTRA_RUSTFEATURES)
 
 ##TARGET clippy: run clippy linter
 clippy: $(GENERATED_CODE)
