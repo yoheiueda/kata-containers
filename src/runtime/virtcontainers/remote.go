@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/containerd/ttrpc"
+	persistapi "github.com/kata-containers/kata-containers/src/runtime/pkg/hypervisors"
 	pb "github.com/kata-containers/kata-containers/src/runtime/protocols/hypervisor"
-	persistapi "github.com/kata-containers/kata-containers/src/runtime/virtcontainers/persist/api"
 	"github.com/kata-containers/kata-containers/src/runtime/virtcontainers/types"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -51,7 +51,7 @@ func (s *remoteService) Close() error {
 	return s.conn.Close()
 }
 
-func (rh *remoteHypervisor) CreateVM(ctx context.Context, id string, networkNS NetworkNamespace, hypervisorConfig *HypervisorConfig) error {
+func (rh *remoteHypervisor) CreateVM(ctx context.Context, id string, network Network, hypervisorConfig *HypervisorConfig) error {
 
 	rh.sandboxID = remoteHypervisorSandboxID(id)
 	rh.config = hypervisorConfig
@@ -67,7 +67,7 @@ func (rh *remoteHypervisor) CreateVM(ctx context.Context, id string, networkNS N
 	req := &pb.CreateVMRequest{
 		Id:                   id,
 		Annotations:          annotations,
-		NetworkNamespacePath: networkNS.NetNsPath,
+		NetworkNamespacePath: network.NetworkID(),
 	}
 
 	res, err := s.client.CreateVM(context.Background(), req)

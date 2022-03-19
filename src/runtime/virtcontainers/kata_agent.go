@@ -17,6 +17,7 @@ import (
 	"sync"
 	"syscall"
 	"time"
+        "io/ioutil"
 
 	"github.com/docker/go-units"
 	"github.com/kata-containers/kata-containers/src/runtime/pkg/katautils/katatrace"
@@ -725,7 +726,7 @@ func (k *kataAgent) startSandbox(ctx context.Context, sandbox *Sandbox) error {
 		}
 
 		// Setup network interfaces and routes
-		interfaces, routes, neighs, err := generateVCNetworkStructures(ctx, sandbox.networkNS)
+		interfaces, routes, neighs, err := generateVCNetworkStructures(ctx, sandbox.network)
 		if err != nil {
 			return err
 		}

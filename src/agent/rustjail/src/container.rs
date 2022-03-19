@@ -215,6 +215,7 @@ pub trait BaseContainer {
     async fn start(&mut self, p: Process) -> Result<()>;
     async fn run(&mut self, p: Process) -> Result<()>;
     async fn destroy(&mut self) -> Result<()>;
+    fn signal(&self, sig: Signal, all: bool) -> Result<()>;
     fn exec(&mut self) -> Result<()>;
 }
 
