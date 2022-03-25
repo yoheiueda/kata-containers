@@ -139,7 +139,7 @@ type hypervisor struct {
 	Rootless                bool     `toml:"rootless"`
 	DisableSeccomp          bool     `toml:"disable_seccomp"`
 	DisableSeLinux          bool     `toml:"disable_selinux"`
-	RemoteHypervisorSocket  string   `toml:"remove_hypervisor"`
+	RemoteHypervisorSocket  string   `toml:"remote_hypervisor"`
 }
 
 type runtime struct {
