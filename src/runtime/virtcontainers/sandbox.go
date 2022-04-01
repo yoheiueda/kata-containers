@@ -44,6 +44,7 @@ import (
 	"github.com/kata-containers/kata-containers/src/runtime/virtcontainers/types"
 	vcTypes "github.com/kata-containers/kata-containers/src/runtime/virtcontainers/types"
 	"github.com/kata-containers/kata-containers/src/runtime/virtcontainers/utils"
+	cri "github.com/containerd/containerd/pkg/cri/annotations"
 )
 
 // sandboxTracingTags defines tags for the trace span
@@ -597,6 +598,9 @@ func newSandbox(ctx context.Context, sandboxConfig SandboxConfig, factory Factor
 	if err := s.Restore(); err != nil {
 		s.Logger().WithError(err).Debug("restore sandbox failed")
 	}
+
+	sandboxConfig.HypervisorConfig.SandboxName = sandboxConfig.Containers[0].Annotations[cri.SandboxName]
+	sandboxConfig.HypervisorConfig.SandboxNamespace = sandboxConfig.Containers[0].Annotations[cri.SandboxNamespace]
 
 	// store doesn't require hypervisor to be stored immediately
 	if err = s.hypervisor.CreateVM(ctx, s.id, s.network, &sandboxConfig.HypervisorConfig); err != nil {

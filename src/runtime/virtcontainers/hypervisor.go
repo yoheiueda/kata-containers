@@ -512,6 +512,10 @@ type HypervisorConfig struct {
 
 	// RemoteHypervisorSocket is the Unix domain socket path for remote hypervisor
 	RemoteHypervisorSocket string
+
+	// Required by RemoteHypervisor
+	SandboxName      string
+	SandboxNamespace string
 }
 
 // vcpu mapping from vcpu number to thread number

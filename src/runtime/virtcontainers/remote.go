@@ -6,6 +6,7 @@ import (
 	"net"
 	"time"
 
+	cri "github.com/containerd/containerd/pkg/cri/annotations"
 	"github.com/containerd/ttrpc"
 	persistapi "github.com/kata-containers/kata-containers/src/runtime/pkg/hypervisors"
 	pb "github.com/kata-containers/kata-containers/src/runtime/protocols/hypervisor"
@@ -17,7 +18,7 @@ import (
 type remoteHypervisor struct {
 	sandboxID       remoteHypervisorSandboxID
 	sandbox         *Sandbox
-	config          *HypervisorConfig
+	config          HypervisorConfig
 	agentSocketPath string
 }
 
@@ -54,7 +55,10 @@ func (s *remoteService) Close() error {
 func (rh *remoteHypervisor) CreateVM(ctx context.Context, id string, network Network, hypervisorConfig *HypervisorConfig) error {
 
 	rh.sandboxID = remoteHypervisorSandboxID(id)
-	rh.config = hypervisorConfig
+
+	if err := rh.setConfig(hypervisorConfig); err != nil {
+		return err
+	}
 
 	s, err := openRemoteService(hypervisorConfig.RemoteHypervisorSocket)
 	if err != nil {
@@ -62,7 +66,10 @@ func (rh *remoteHypervisor) CreateVM(ctx context.Context, id string, network Net
 	}
 	defer s.Close()
 
-	annotations := rh.sandbox.config.Containers[0].Annotations
+	annotations := map[string]string{}
+	annotations[cri.SandboxName] = hypervisorConfig.SandboxName
+	annotations[cri.SandboxNamespace] = hypervisorConfig.SandboxNamespace
+
 
 	req := &pb.CreateVMRequest{
 		Id:                   id,
@@ -205,7 +212,7 @@ func (rh *remoteHypervisor) Capabilities(ctx context.Context) types.Capabilities
 }
 
 func (rh *remoteHypervisor) HypervisorConfig() HypervisorConfig {
-	return *rh.config
+	return rh.config
 }
 
 func (rh *remoteHypervisor) GetThreadIDs(ctx context.Context) (VcpuThreadIDs, error) {
@@ -219,12 +226,8 @@ func (rh *remoteHypervisor) Cleanup(ctx context.Context) error {
 }
 
 func (rh *remoteHypervisor) setConfig(config *HypervisorConfig) error {
-	err := config.Valid()
-	if err != nil {
-		return err
-	}
-
-	rh.config = config
+	// Create a Validator specfic for remote hypervisor
+	rh.config = *config
 
 	return nil
 }
@@ -266,8 +269,4 @@ func (rh *remoteHypervisor) Load(persistapi.HypervisorState) {
 func (rh *remoteHypervisor) IsRateLimiterBuiltin() bool {
 	// TODO
 	return true
-}
-
-func (rh *remoteHypervisor) setSandbox(sandbox *Sandbox) {
-	rh.sandbox = sandbox
 }
