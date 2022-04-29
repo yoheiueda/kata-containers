@@ -1272,6 +1272,31 @@ func (k *kataAgent) createContainer(ctx context.Context, sandbox *Sandbox, c *Co
 	// passing irrelevant information to the agent.
 	k.constrainGRPCSpec(grpcSpec, passSeccomp, sandbox.config.VfioMode == config.VFIOModeGuestKernel)
 
+	if sandbox.config.HypervisorType == RemoteHypervisor {
+		// Need to send a PullImage request for "pause" image before CreateContainer request to ensure the image
+		// is downloaded inside the VM. Ideally this should be the case for all hypervisors when using CC
+		// TODO: remove this code when containerd supports the new Sandbox API
+
+		image, err := getImageName(ociSpec.Annotations)
+		if err != nil {
+			k.Logger().Infof("no image spec available: %v", err)
+			return nil, err
+		}
+
+		//Send PullImageRequest only for "pause" image
+		if image == "k8s.gcr.io/pause:3.2" {
+			k.Logger().Infof("Pulling pause image")
+			reqPull := &grpc.PullImageRequest{
+				Image:       image,
+				ContainerId: c.id,
+			}
+
+			if _, err = k.sendReq(ctx, reqPull); err != nil {
+				return nil, err
+			}
+		}
+	}
+
 	req := &grpc.CreateContainerRequest{
 		ContainerId:  c.id,
 		ExecId:       c.id,
@@ -1286,6 +1311,30 @@ func (k *kataAgent) createContainer(ctx context.Context, sandbox *Sandbox, c *Co
 	}
 
 	return buildProcessFromExecID(req.ExecId)
+}
+
+func getImageName(annotations map[string]string) (string, error) {
+
+	// TODO: Use the annotation constants defined in the packages below
+	//  * github.com/containerd/containerd/blob/main/pkg/cri/annotations
+	//  * github.com/containers/podman/pkg/annotations
+
+	// Note that "io.kubernetes.cri.image-name" is only available with containerd v5 or later
+
+	for _, a := range []string{"io.kubernetes.cri.image-name", "io.kubernetes.cri-o.ImageName"} {
+		if image, ok := annotations[a]; ok {
+			return image, nil
+		}
+	}
+
+	for _, a := range []string{"io.kubernetes.cri.container-type", "io.kubernetes.cri-o.ContainerType"} {
+		if annotations[a] == "sandbox" {
+			// TODO: parameterize the pause container image name
+			return "k8s.gcr.io/pause:3.2", nil
+		}
+	}
+
+	return "", fmt.Errorf("container image name is not specified in annotations: %#v", annotations)
 }
 
 func buildProcessFromExecID(token string) (*Process, error) {
