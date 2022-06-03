@@ -419,52 +419,6 @@ func (c *Container) setContainerState(state types.StateString) error {
 	return nil
 }
 
-func readDir(path string) ([]string, error) {
-
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	return file.Readdirnames(0)
-}
-
-func (c *Container) recursiveCopy(ctx context.Context, src, dst string) (bool, error) {
-
-	fileInfo, err := os.Lstat(src)
-	if err != nil {
-		return false, err
-	}
-
-	if !(fileInfo.Mode().IsRegular() || fileInfo.Mode().IsDir() || (fileInfo.Mode()&os.ModeSymlink) == os.ModeSymlink) {
-		// Ignore the mount if this is not a regular file (excludes socket, device, ...) as it cannot be handled by
-		// a simple copy. But this should not be treated as an error, only as a limitation.
-		c.Logger().WithField("ignored-file", src).Debug("Ignoring non-regular file as FS sharing not supported")
-		return true, nil
-	}
-
-	if err := c.sandbox.agent.copyFile(ctx, src, dst); err != nil {
-		return false, err
-	}
-
-	if !fileInfo.Mode().IsDir() {
-		return false, nil
-	}
-
-	names, err := readDir(src)
-	if err != nil {
-		return false, err
-	}
-
-	for _, name := range names {
-		if _, err := c.recursiveCopy(ctx, filepath.Join(src, name), filepath.Join(dst, name)); err != nil {
-			return false, err
-		}
-	}
-	return false, nil
-}
-
 // mountSharedDirMounts handles bind-mounts by bindmounting to the host shared
 // directory which is mounted through virtiofs/9pfs in the VM.
 // It also updates the container mount list with the HostPath info, and store
