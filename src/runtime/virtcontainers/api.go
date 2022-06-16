@@ -87,17 +87,17 @@ func createSandboxFromConfig(ctx context.Context, sandboxConfig SandboxConfig, f
 		return nil, err
 	}
 
-	// Start the VM
-	if err = s.startVM(ctx); err != nil {
-		return nil, err
-	}
-
 	// rollback to stop VM if error occurs
 	defer func() {
 		if err != nil {
 			s.stopVM(ctx)
 		}
 	}()
+
+	// Start the VM
+	if err = s.startVM(ctx); err != nil {
+		return nil, err
+	}
 
 	s.postCreatedNetwork(ctx)
 
