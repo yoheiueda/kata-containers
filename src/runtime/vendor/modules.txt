@@ -128,7 +128,7 @@ github.com/containernetworking/plugins/pkg/testutils
 github.com/coreos/go-systemd/v22/dbus
 # github.com/cpuguy83/go-md2man/v2 v2.0.0
 github.com/cpuguy83/go-md2man/v2/md2man
-# github.com/cri-o/cri-o v1.0.0-rc2.0.20170928185954-3394b3b2d6af
+# github.com/cri-o/cri-o v1.10.6
 ## explicit
 github.com/cri-o/cri-o/pkg/annotations
 # github.com/cyphar/filepath-securejoin v0.2.2
