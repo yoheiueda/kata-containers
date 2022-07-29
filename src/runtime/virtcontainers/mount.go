@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"syscall"
 
@@ -65,6 +66,19 @@ func isSystemMount(m string) bool {
 	}
 
 	return false
+}
+
+func isCsiMount(m string) bool {
+	// Usually it's mount for CSI driver node plugin.
+	if m == "/var/lib/kubelet" {
+		return true
+	}
+
+	// For a PVC volume mount, it would be a pod-specific path like:
+	// `/var/lib/kubelet/pods/<pod-uuid>/volumes/kubernetes.io~csi/<pvc-name>/mount`
+	matched, _ := regexp.MatchString(`^/var/lib/kubelet.*/kubernetes.io~csi/.*/mount$`, m)
+
+	return matched
 }
 
 func isHostDevice(m string) bool {

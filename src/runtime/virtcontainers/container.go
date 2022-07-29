@@ -442,6 +442,12 @@ func (c *Container) mountSharedDirMounts(ctx context.Context, sharedDirMounts, i
 			continue
 		}
 
+		// Skip handling CSI related mounts for remote hypervisor,
+		// so that the mount source path will not be changed.
+		if c.sandbox.config.HypervisorType == RemoteHypervisor && isCsiMount(m.Source) {
+			continue
+		}
+
 		// Check if mount is a block device file. If it is, the block device will be attached to the host
 		// instead of passing this as a shared mount:
 		if len(m.BlockDeviceID) > 0 {
