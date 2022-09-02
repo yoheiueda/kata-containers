@@ -26,15 +26,12 @@ fn get_rule_conditions(args: &[LinuxSeccompArg]) -> Result<Vec<ScmpArgCompare>> 
             return Err(anyhow!("seccomp opreator is required"));
         }
 
-        let mut op = ScmpCompareOp::from_str(&arg.op)?;
-        let mut value = arg.value;
-        // For SCMP_CMP_MASKED_EQ, arg.value is the mask and arg.value_two is the value
-        if op == ScmpCompareOp::MaskedEqual(u64::default()) {
-            op = ScmpCompareOp::MaskedEqual(arg.value);
-            value = arg.value_two;
-        }
-
-        let cond = ScmpArgCompare::new(arg.index, op, value);
+        let cond = ScmpArgCompare::new(
+            arg.index,
+            ScmpCompareOp::from_str(&arg.op)?,
+            arg.value,
+            Some(arg.value_two),
+        );
 
         conditions.push(cond);
     }
@@ -47,7 +44,7 @@ pub fn get_unknown_syscalls(scmp: &LinuxSeccomp) -> Option<Vec<String>> {
 
     for syscall in &scmp.syscalls {
         for name in &syscall.names {
-            if ScmpSyscall::from_name(name).is_err() {
+            if get_syscall_from_name(name, None).is_err() {
                 unknown_syscalls.push(name.to_string());
             }
         }
@@ -63,7 +60,7 @@ pub fn get_unknown_syscalls(scmp: &LinuxSeccomp) -> Option<Vec<String>> {
 // init_seccomp creates a seccomp filter and loads it for the current process
 // including all the child processes.
 pub fn init_seccomp(scmp: &LinuxSeccomp) -> Result<()> {
-    let def_action = ScmpAction::from_str(scmp.default_action.as_str(), Some(libc::EPERM as i32))?;
+    let def_action = ScmpAction::from_str(scmp.default_action.as_str(), Some(libc::EPERM as u32))?;
 
     // Create a new filter context
     let mut filter = ScmpFilterContext::new_filter(def_action)?;
@@ -75,7 +72,7 @@ pub fn init_seccomp(scmp: &LinuxSeccomp) -> Result<()> {
     }
 
     // Unset no new privileges bit
-    filter.set_ctl_nnp(false)?;
+    filter.set_no_new_privs_bit(false)?;
 
     // Add a rule for each system call
     for syscall in &scmp.syscalls {
@@ -83,13 +80,13 @@ pub fn init_seccomp(scmp: &LinuxSeccomp) -> Result<()> {
             return Err(anyhow!("syscall name is required"));
         }
 
-        let action = ScmpAction::from_str(&syscall.action, Some(syscall.errno_ret as i32))?;
+        let action = ScmpAction::from_str(&syscall.action, Some(syscall.errno_ret))?;
         if action == def_action {
             continue;
         }
 
         for name in &syscall.names {
-            let syscall_num = match ScmpSyscall::from_name(name) {
+            let syscall_num = match get_syscall_from_name(name, None) {
                 Ok(num) => num,
                 Err(_) => {
                     // If we cannot resolve the given system call, we assume it is not supported
@@ -99,10 +96,10 @@ pub fn init_seccomp(scmp: &LinuxSeccomp) -> Result<()> {
             };
 
             if syscall.args.is_empty() {
-                filter.add_rule(action, syscall_num)?;
+                filter.add_rule(action, syscall_num, None)?;
             } else {
                 let conditions = get_rule_conditions(&syscall.args)?;
-                filter.add_rule_conditional(action, syscall_num, &conditions)?;
+                filter.add_rule(action, syscall_num, Some(&conditions))?;
             }
         }
     }
